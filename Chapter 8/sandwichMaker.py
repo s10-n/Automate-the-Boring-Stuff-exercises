@@ -35,7 +35,7 @@ def sandwichMaker():
         grandTotal += condiments['tomato']
     quantity = pyip.inputInt(prompt='How many of those do you want?\n')
     grandTotal *= quantity
-    priceRegex = re.compile(r'\d\d\.\d{1}')
+    priceRegex = re.compile(r'\d\*.\d{1}')
     if not re.findall(priceRegex,str(grandTotal)):
         grandTotal = str(grandTotal) + '0'
     print("That'll be $%s. Cash or card?"%(grandTotal))
