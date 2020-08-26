@@ -13,5 +13,6 @@ elif len(sys.argv) == 2:
         pyperclip.copy(str(list(mcbShelf.keys())))
     elif sys.argv[1] in mcbShelf:
         pyperclip.copy(mcbShelf[sys.argv[1]])
+print(sys.argv[1])
 # todo: list keywords and load content
 mcbShelf.close()
