@@ -5,9 +5,11 @@ import os
 from pathlib import Path
 
 def large_file_search(folder_tree,file_size): # file size should be in bytes
+    def size_checker(object_to_check):
+        if os.path.getsize(Path(folderName) / Path(object_to_check)) > file_size:
+            print(Path(folderName) / Path(object_to_check))
     for folderName, subfolders, filenames in os.walk(folder_tree):
-        
-
-p = Path('c:/Users/User/Desktop/Movies/A.Scene.At.The.Sea.1991.DVDRip.XviD/A Scene at the Sea.avi')
-print(str(round(os.path.getsize(p)/1000000,2)) + ' MB')
-
+        for subfolder in subfolders:
+            size_checker(subfolder)
+        for filename in filenames:
+            size_checker(filename)
