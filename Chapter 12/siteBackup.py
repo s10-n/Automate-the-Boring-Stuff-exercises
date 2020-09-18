@@ -17,12 +17,19 @@ def page_backup(url):
         for chunk in page.iter_content(100000):
             page_file.write(chunk)
         page_file.close()
+        print('Successfully saved ' + os.path.basename(url))
     # create a soup of the page and get all the links out of it
     pageSoup = bs4.BeautifulSoup(page.text, 'html.parser')
     list_of_urls = []
+    # visit each link and call page_backup recursively
     for link in list(set(pageSoup.find_all('a'))):
-        if link.get('href') not in list_of_urls and not re.search('https://',link.get('href')):
+        if link.get('href') not in list_of_urls and not re.search('https://|http://|mailto|#',link.get('href')):
             list_of_urls.append(link.get('href'))
-    print(list_of_urls)
+    for url in list_of_urls:
+        if not os.path.exists(os.path.join(directory_name,url)):
+            page_backup(initial_url + '/' + url)
 
-page_backup(input('Insert the url of the website you would like to back up: '))
+initial_url = input('Insert the url of the website you would like to back up: ')
+if not re.search('^https://|^http://',initial_url):
+    initial_url = 'http://' + initial_url
+page_backup(initial_url)
