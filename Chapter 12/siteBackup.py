@@ -30,7 +30,7 @@ def page_backup(url):
         if not os.path.exists(os.path.join(directory_name,url)):
             page_backup(initial_url + '/' + url)
 
-initial_url = input('Insert the url of the website you would like to back up: ')
+initial_url = input('Insert the url of the website you would like to back up (be sure to include "www"): ')
 if not re.search('^https://|^http://',initial_url):
     initial_url = 'http://' + initial_url
 page_backup(initial_url)
