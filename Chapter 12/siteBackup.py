@@ -23,8 +23,9 @@ def page_backup(url):
     list_of_urls = []
     # visit each link and call page_backup recursively
     for link in list(set(pageSoup.find_all('a'))):
-        if link.get('href') not in list_of_urls and not re.search('https://|http://|mailto|#',link.get('href')):
-            list_of_urls.append(link.get('href'))
+        link_href = link.get('href')
+        if link_href not in list_of_urls and not re.search('https://|http://|mailto|#',link_href):
+            list_of_urls.append(link_href)
     for url in list_of_urls:
         if not os.path.exists(os.path.join(directory_name,url)):
             page_backup(initial_url + '/' + url)
