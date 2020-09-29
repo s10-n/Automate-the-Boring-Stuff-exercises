@@ -1,22 +1,48 @@
 #! python3
 # commandLineEmailer.py - takes an email address and string of text on the command line and then, using selenium, logs in to your email account and sends an email of the string to the provided address
 
-import sys,pyinputplus,requests,bs4
+import sys,pyinputplus
 from selenium import webdriver
-#if len(sys.argv) != 3:
-#    raise Exception('commandLineEmailer requires an email address and a string of text.')
-#else:
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
 def command_line_emailer(email_address,email_string):
-    email_provider = input('Please enter the URL of your email provider: ')
+    
+    # open Yahoo in Firefox
     browser = webdriver.Firefox()
-    browser.get(email_provider)
-    browser.find_element_by_xpath('//*[@title="Login"]').click()
-    user_element = browser.find_element_by_id('login-username-input')
+    browser.get('http://www.yahoo.com')
+    
+    # click on the "Sign in" button
+    browser.find_element_by_id('header-signin-link').click()
+    
+    # find the username input box, prompt the user to enter their email, and click sign in
+    user_element = browser.find_element_by_id('login-username')
     user_element.send_keys(input('Please enter your email address: '))
-    password_element = browser.find_element_by_id('login-password-input')
+    browser.find_element_by_id('login-signin').click()
+
+    # find the password input box, prompt the user to enter their password, and click sign in
+    password_element = browser.find_element_by_id('login-passwd')
     user_password = pyinputplus.inputPassword('Please enter your password: ')
-    print(user_password)
+    password_element.send_keys(user_password)
+    browser.find_element_by_id('login-signin').click()
 
-#command_line_emailer(sys.argv[1],sys.argv[2])
+    # open the Mail section of Yahoo
+    browser.find_element_by_id('header-mail-button').click()
 
+    # create a new message
+    browser.find_element_by_tag_name('html').send_keys('n')
 
+    # put the recipient's email in the "to" field
+    browser.find_element_by_id('message-to-field').send_keys(email_address)
+
+    # add a subject
+    browser.find_element_by_xpath('//input[@data-test-id="compose-subject"]').send_keys('Sent with commandLineEmailer.py')
+
+    # tab down to the message body, input the included message, and send
+    browser.switch_to.active_element.send_keys(Keys.TAB)
+    browser.switch_to.active_element.send_keys(email_string)
+    browser.find_element_by_xpath('//button[@title="Send this email"]').click()
+    print('Email to ' + email_address + ' sent.')
+    print('Message body: ' + email_string)
+    
+command_line_emailer(sys.argv[1],' '.join(sys.argv[2:]))
