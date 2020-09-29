@@ -44,5 +44,6 @@ def command_line_emailer(email_address,email_string):
     browser.find_element_by_xpath('//button[@title="Send this email"]').click()
     print('Email to ' + email_address + ' sent.')
     print('Message body: ' + email_string)
+    browser.quit()
     
 command_line_emailer(sys.argv[1],' '.join(sys.argv[2:]))
