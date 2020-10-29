@@ -24,5 +24,3 @@ try:
         lastTime = time.time() # reset the last lap time
 except KeyboardInterrupt:
     print('\nDone.')
-
-    Lap # 1:   3.56 (  3.56)
